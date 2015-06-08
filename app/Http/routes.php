@@ -18,10 +18,14 @@ $router->get('/', function () {
 
 $router->post('/auth/token', ['uses' => 'Auth\OAuth2Controller@token']);
 
+//all api route goes inside here
 $router->group(['prefix' => 'api', 'middleware' => 'oauth'] , function($router){
 
-    $router->get('test', function(){
-        return 'this is private';
-    });
+    $router->get('test', function(){return 'this is private';});
+});
+
+
+//all route that need to have csrf protection goes inside this group
+$router->group(['middleware' => 'csrf'] , function($router){
 
 });
