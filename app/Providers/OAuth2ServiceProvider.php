@@ -9,6 +9,7 @@ use OAuth2\GrantType\UserCredentials;
 
 class OAuth2ServiceProvider extends ServiceProvider
 {
+
     /**
      * Indicates if loading of the provider is deferred.
      *
