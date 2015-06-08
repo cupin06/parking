@@ -1,0 +1,34 @@
+composer.phar
+vendor/
+/node_modules
+.env
+.idea/
+
+node_modules
+bower_components
+
+Desktop.ini
+Thumbs.db
+ehthumbs.db
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+*.sublime-workspace
