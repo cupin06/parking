@@ -7,10 +7,9 @@ use Pocket\User;
 class Eloquent extends \OAuth2\Storage\Pdo
 {
 
-
-    public function __construct($connection, $config = array())
+    public function __construct()
     {
-        parent::__construct($connection, $config);
+        parent::__construct(app('db')->getPdo(), ['user_table' => 'users']);
     }
 
     protected function checkPassword($user, $password)
