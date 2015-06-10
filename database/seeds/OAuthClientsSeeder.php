@@ -8,7 +8,7 @@ class OAuthClientsSeeder extends Seeder
     {
         DB::table('oauth_clients')->insert(array(
             'client_id' => "testclient",
-            'client_secret' => "testpass",
+            'client_secret' => NULL,
             'redirect_uri' => "http://fake/",
         ));
 
