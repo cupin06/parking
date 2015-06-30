@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Kuala_Lumpur',
 
     /*
     |--------------------------------------------------------------------------
@@ -144,6 +144,7 @@ return [
         Pocket\Providers\EventServiceProvider::class,
         Pocket\Providers\RouteServiceProvider::class,
         Pocket\Providers\OAuth2ServiceProvider::class,
+        'Aloha\Twilio\Support\Laravel\ServiceProvider',
 
     ],
 
@@ -192,6 +193,7 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
+        'Twilio' => 'Aloha\Twilio\Support\Laravel\Facade',
 
     ],
 

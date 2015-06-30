@@ -18,5 +18,13 @@ class UserTableSeeder extends Seeder
             'password' => bcrypt('123456'),
             'remember_token' => str_random(10),
         ]);
+
+        User::create([
+            'name' => 'Faiz',
+            'email' => 'faiz@pocketpixel.com',
+            'password' => bcrypt('123456'),
+            'remember_token' => str_random(10),
+        ]);
+
     }
 }

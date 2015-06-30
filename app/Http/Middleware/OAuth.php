@@ -25,10 +25,11 @@ class OAuth
 
             return $next($request);
 
-        } else {
-            return \Response::json(array(
-                'error' => 'Unauthorized'
-            ), $bridgedResponse->getStatusCode());
         }
+
+        $responseContent = json_decode($bridgedResponse->getContent(), true);
+
+        return \Response::json(array('error' => $responseContent['error'],'error_description' => $responseContent['error_description'],  'statusText' => 'Unauthorized', 'statusCode' => $bridgedResponse->getStatusCode()));
+
     }
 }
