@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Pocket\Api\Parking\ParkingFactory;
 use Pocket\Api\Parking\ParkingRepository;
 use Pocket\Api\SMS\SMSRepository;
+use Pocket\Api\Vehicle\VehicleRepository;
 use Pocket\Http\Controllers\Controller;
 
 class ParkingController extends Controller
@@ -15,16 +16,20 @@ class ParkingController extends Controller
 
     private $parkingRepository;
 
+    private $vehicleRepository;
+
     /**
      * Default Constructor. Inject Parking Factory and Parking Repository
      *
      * @param ParkingFactory $parkingFactory
      * @param ParkingRepository $parkingRepository
+     * @param VehicleRepository $vehicleRepository
      */
-    public function __construct(ParkingFactory $parkingFactory, ParkingRepository $parkingRepository)
+    public function __construct(ParkingFactory $parkingFactory, ParkingRepository $parkingRepository, VehicleRepository $vehicleRepository)
     {
         $this->parkingFactory = $parkingFactory;
         $this->parkingRepository = $parkingRepository;
+        $this->vehicleRepository = $vehicleRepository;
     }
 
     /**
@@ -136,7 +141,9 @@ class ParkingController extends Controller
             $longitude = $parkingInfo['longitude'];
             $price = $parkingInfo['price'];
 
-            $SMSRepository->sendMessage($parkingInfo);
+            $vehicleInfo = $this->vehicleRepository->getByID($vehicleID);
+
+            $SMSRepository->newParkingMessage($parkingInfo, $vehicleInfo);
 
             return json_encode(['status' => '1', 'status_message' => 'Successfully paid parking.',
                 'parking' => ['id' => $id, 'vehicle_id' => $vehicleID, 'user_id' => $userID, 'hours' => $hours, 'minutes' => $minutes, 'status' => $status, 'start_time' => $start_time, 'end_time' => $end_time, 'latitude' => $latitude, 'longitude' => $longitude, 'price' => $price]]);
@@ -149,14 +156,20 @@ class ParkingController extends Controller
      * Update specific Parking Information using Parking ID
      *
      * @param Request $request
+     * @param SMSRepository $SMSRepository
      * @param $id
      * @return string
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, SMSRepository $SMSRepository, $id)
     {
         $parkingInfo = $this->parkingFactory->update($request->all(), $id);
 
         if ($parkingInfo) {
+
+            $parkingInfoExtend = $this->parkingRepository->getWithParkingID($id);
+
+            $SMSRepository->extendParkingMessage($request->all(), $parkingInfoExtend);
+
             return json_encode(['status' => $parkingInfo, 'status_message' => 'Successfully Extend Parking .']);
         }
 

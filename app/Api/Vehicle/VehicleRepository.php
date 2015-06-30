@@ -25,4 +25,9 @@ class VehicleRepository
     {
         return $this->vehicleModel->all();
     }
+
+    public function getByID($vehicleID)
+    {
+        return $this->vehicleModel->where('id', $vehicleID)->first();
+    }
 }

@@ -80,6 +80,17 @@ class ParkingRepository
         return $this->parkingModel->with('vehicles')->where('user_id', $userID)->where('status', 0)->get();
     }
 
+    /**
+     * Get Parking Information for specific parking using Parking ID
+     *
+     * @param $parkingID
+     * @return mixed
+     */
+    public function getWithParkingID($parkingID)
+    {
+        return $this->parkingModel->where('id', $parkingID)->with('vehicles')->first();
+    }
+
 
 
 }

@@ -3,6 +3,7 @@
 namespace Pocket\Api\SMS;
 
 use Aloha\Twilio\Twilio;
+use Pocket\Api\Vehicle\VehicleRepository;
 
 class SMSRepository
 {
@@ -16,26 +17,51 @@ class SMSRepository
         $this->twilio = new Twilio(config('twilio.twilio.connections.twilio.sid'), config('twilio.twilio.connections.twilio.token'), config('twilio.twilio.connections.twilio.from'));
     }
 
+
     /**
-     * Send SMS message using Nexmo API
+     * SMS Message for New Parking
      *
      * @param $parkingInfo
+     * @param $vehicleInfo
      */
-    public function sendMessage($parkingInfo)
+    public function newParkingMessage($parkingInfo, $vehicleInfo)
     {
-        $id = $parkingInfo['id'];
-        $vehicleID = $parkingInfo['vehicle_id'];
         $userID = $parkingInfo['user_id'];
         $hours = $parkingInfo['hours'];
         $minutes = $parkingInfo['minutes'];
-        $status = $parkingInfo['status'];
         $start_time = $parkingInfo['start_time'];
         $end_time = $parkingInfo['end_time'];
-        $latitude = $parkingInfo['latitude'];
-        $longitude = $parkingInfo['longitude'];
         $price = $parkingInfo['price'];
 
-        $this->twilio->message('+60174862127', $userID . " pay RM" . $price . " for the parking space. Parking duration start from " . $start_time . " until " . $end_time . ". The Parking duration is " .
-        $hours . " hours " . $minutes . " minutes. The vehicle located at https://www.google.com/maps/@" . $latitude . "," . $longitude . ",16z");
+        $vehicleNumber = $vehicleInfo['plate_no'];
+        $vehicleManufacturer = $vehicleInfo['manufacturer'];
+        $vehicleModel = $vehicleInfo['model'];
+        $vehicleColor = $vehicleInfo['color'];
+
+        $this->twilio->message('+60174862127', $userID . " paid RM" . $price . " for new parking" . ". Parking Start: " . $start_time . " Parking End: " . $end_time . ". Duration: " .
+        $hours . " hours " . $minutes . " minutes. Vehicle: " . $vehicleManufacturer . " " . $vehicleModel . " " . $vehicleColor . " " . $vehicleNumber);
+    }
+
+    /**
+     * SMS Message for Extend Parking
+     *
+     * @param $input
+     * @param $parkingInfo
+     */
+    public function extendParkingMessage($input, $parkingInfo)
+    {
+
+        $extendHour = $input['extend_hours'];
+        $extendMinute = $input['extend_minutes'];
+        $extendPrice = $input['extend_price'];
+        $userID = $parkingInfo['user_id'];
+        $end_time = $parkingInfo['end_time'];
+        $vehicleNumber = $parkingInfo->vehicles['plate_no'];
+        $vehicleManufacturer = $parkingInfo->vehicles['manufacturer'];
+        $vehicleModel = $parkingInfo->vehicles['model'];
+        $vehicleColor = $parkingInfo->vehicles['color'];
+
+        $this->twilio->message('+60174862127', $userID . " paid RM" . $extendPrice . " for extend parking. New Parking End: " . $end_time . ". Extend Parking duration is " .
+            $extendHour . " hours " . $extendMinute . " minutes. " . "Vehicle: " . $vehicleManufacturer . " " . $vehicleModel . " " . $vehicleColor . " " . $vehicleNumber);
     }
 }
