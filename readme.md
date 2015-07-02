@@ -1,3 +1,76 @@
+## Smart Parking Api
+
+### Development Enviroment
+
+##### Prerequisite
+MySQL, PHP5.5, Composer
+
+###### Install Composer
+``` 
+brew install composer
+```
+Clone Smart Parking Repo
+```
+git@git.pocketpixel.com:pocket-developer/Smart-Parking-API.git
+```
+
+Create **.env** file in project root
+```
+touch .env
+```
+
+Use your favourite editor to copy the content below to your **.env** file
+```
+APP_ENV=local
+APP_DEBUG=true
+
+DB_HOST=localhost
+DB_DATABASE=smartparking
+DB_USERNAME=root
+DB_PASSWORD=
+````
+
+Install Laravel dependency
+```
+composer install
+```
+
+Set Permission
+```
+cd app/
+sudo chmod -R 777 storage/
+```
+
+Set Application Key
+```
+php artisan key:generate
+```
+
+### Setup Twilio SMS 
+
+Publish default Twilio config file
+```
+php artisan vendor:publish
+```
+
+Get Twilio API Credential. Login into Twilio Website and go to Dashboard.
+Click Show API Credentials in the right side to get ACCOUNT SID and AUTH TOKEN
+Example
+
+```
+ACCOUNT_SID : AC21447b19240db593f8ec494dc52d0862
+AUTH TOKEN : 657c0bfd7feb671dbb7448458df73e35
+```
+
+Get Twilio Phone Number
+Click on NUMBERS Menu copy the Phone Number
+```
+Phone Number : +19738142990
+```
+
+Open file project_folder/config/twilio.php. Paste ACCOUNT SID, AUTH TOKEN and PHONE NUMBER in the twilio config file.
+
+
 ## Laravel PHP Framework
 
 [![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
